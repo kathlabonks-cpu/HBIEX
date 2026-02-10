@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Expense Tracker</title>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app">
+        <!-- Landing Page -->
+        <div id="landing-page" class="container full-screen">
+            <nav class="landing-nav">
+                <div class="nav-brand">HBIEX</div>
+                <div class="nav-links">
+                    <button id="nav-login-btn" class="nav-btn">Log In</button>
+                    <button id="nav-signup-btn" class="nav-btn primary">Sign Up</button>
+                </div>
+            </nav>
+                
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="animate-fade-up delay-1">HBX Income Expense Tracker</h1>
+                    <p class="animate-fade-up delay-2">Master your finances with minimalist precision. Track, analyze, and optimize your wealth with HBIEX.</p>
+                    <div class="hero-actions animate-fade-up delay-3">
+                        <button id="get-started-btn" class="cta-btn">Get Started</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features-section animate-fade-up delay-4">
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>Smart Analytics</h3>
+                    <p>Visualise your spending habits with intuitive charts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🔒</div>
+                    <h3>Secure & Private</h3>
+                    <p>Your data is encrypted and safe.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📱</div>
+                    <h3>Mobile Ready</h3>
+                    <p>Optimized for any device, anywhere.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Auth Section -->
+        <div id="auth-container" class="container hidden">
+            <h1>Expense Tracker</h1>
+            <p>Track your personal finances securely.</p>
+            <form id="auth-form">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" id="login-btn">Log In / Sign Up</button>
+            </form>
+            <p id="auth-message"></p>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard-container" class="container hidden">
+            <header>
+                <h2>My Expenses</h2>
+                <div class="header-actions">
+                    <select id="currency-selector">
+                        <option value="USD">USD ($)</option>
+                        <option value="NGN">NGN (₦)</option>
+                    </select>
+                    <button id="logout-btn">Log Out</button>
+                </div>
+            </header>
+
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="card income">
+                    <h3>Income</h3>
+                    <p id="total-income">0.00</p>
+                </div>
+                <div class="card expense">
+                    <h3>Expenses</h3>
+                    <p id="total-expense">0.00</p>
+                </div>
+                <div class="card balance">
+                    <h3>Balance</h3>
+                    <p id="total-balance">0.00</p>
+                </div>
+            </div>
+
+            <!-- Budget Warning -->
+            <div id="budget-warning" class="warning hidden">
+                ⚠️ You have exceeded your monthly budget!
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-container">
+                <canvas id="expenseChart"></canvas>
+            </div>
+
+            <!-- Add Transaction -->
+            <div class="actions">
+                <button id="add-btn">+ Add Transaction</button>
+            </div>
+
+            <!-- Filters -->
+             <div class="filters">
+                <input type="month" id="month-filter">
+             </div>
+
+            <!-- Transaction List -->
+            <div class="transactions-list">
+                <h3>Recent Transactions</h3>
+                <ul id="transaction-ul">
+                    <!-- Loaded dynamically -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2 id="modal-title">Add Transaction</h2>
+            <form id="transaction-form">
+                <input type="hidden" id="transaction-id">
+                
+                <label>Type</label>
+                <div class="type-toggle">
+                    <label><input type="radio" name="type" value="expense" checked> Expense</label>
+                    <label><input type="radio" name="type" value="income"> Income</label>
+                </div>
+
+                <label>Amount</label>
+                <input type="number" id="amount" step="0.01" required>
+
+                <label>Category</label>
+                <!-- Simplified text input for MVP, can upgrade to select later -->
+                <input type="text" id="category" placeholder="e.g. Food, Rent, Salary" list="category-list" required>
+                <datalist id="category-list">
+                    <option value="Food">
+                    <option value="Transport">
+                    <option value="Utilities">
+                    <option value="Entertainment">
+                    <option value="Salary">
+                    <option value="Freelance">
+                </datalist>
+
+                <label>Date</label>
+                <input type="date" id="date" required>
+
+                <label>Note</label>
+                <input type="text" id="note" placeholder="Optional note">
+
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Offline Indicator -->
+    <div id="offline-indicator" class="hidden">You are offline. Changes will sync when online.</div>
+
+    <script src="charts.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
